@@ -57,7 +57,11 @@ un_demo.py 会依次完成：
 
 ## 目录结构
 
+<<<<<<< HEAD
 `	ext
+=======
+```text
+>>>>>>> fce9fd3819eaec02ac29c223ae2f83dc92dad7c6
 .
 ├── index.html                         # 交互式经营看板
 ├── data/
@@ -75,8 +79,13 @@ un_demo.py 会依次完成：
 ├── docs/
 │   └── attribution-rules.md            # 指标与归因口径
 └── .github/workflows/
+<<<<<<< HEAD
     └── deploy-pages.yml                # GitHub Pages 部署流程
 `
+=======
+    └── deploy-pages.yml              # GitHub Pages 部署流程
+```
+>>>>>>> fce9fd3819eaec02ac29c223ae2f83dc92dad7c6
 
 ## 归因与指标口径
 
