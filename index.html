@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="抖音本地生活卖车全链路转化看板（完全合成的模拟数据 Demo）">
+  <title>抖音本地生活卖车转化看板｜Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root { --ink:#12302e; --muted:#647876; --bg:#f4f8f7; --card:#fff; --line:#d9e6e2; --green:#087566; --amber:#d68a24; --coral:#c55a51; --radius:16px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Microsoft YaHei",sans-serif; }
+    .shell { width:min(1180px,calc(100% - 32px)); margin:0 auto; padding:30px 0 48px; }
+    .hero { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
+    h1 { margin:0 0 7px; font-size:clamp(25px,4vw,35px); letter-spacing:-.035em; }
+    h2 { margin:0; font-size:17px; }
+    .subtitle,.note,.footer { color:var(--muted); }
+    .subtitle { margin:0; max-width:760px; }
+    .badge { padding:7px 11px; border-radius:999px; background:#dcf3ec; color:#05665b; font-weight:800; white-space:nowrap; }
+    .notice { margin:18px 0 16px; padding:11px 14px; border:1px solid #f0d5a4; border-radius:12px; background:#fff9ed; color:#74501d; }
+    .filters,.section,.kpi { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); }
+    .filters { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; padding:15px; }
+    label { display:grid; gap:5px; color:var(--muted); font-size:12px; font-weight:800; }
+    select,button { width:100%; border-radius:9px; padding:10px; font:inherit; }
+    select { border:1px solid var(--line); color:var(--ink); background:#fff; }
+    button { align-self:end; border:0; color:#fff; background:var(--green); cursor:pointer; font-weight:800; }
+    button:hover { background:#055f55; }
+    .kpis { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin:16px 0; }
+    .kpi { padding:15px; }
+    .kpi-label { color:var(--muted); font-size:12px; font-weight:800; }
+    .kpi-value { margin-top:5px; font-size:26px; font-weight:850; letter-spacing:-.04em; }
+    .kpi-note { margin-top:3px; color:var(--muted); font-size:12px; }
+    .grid { display:grid; grid-template-columns:1.35fr .95fr; gap:16px; margin-bottom:16px; }
+    .section { padding:17px; }
+    .section-header { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:14px; }
+    .note { font-size:12px; }
+    .funnel { display:grid; gap:10px; }
+    .funnel-row { display:grid; grid-template-columns:90px 1fr 64px; gap:10px; align-items:center; }
+    .bar-bg { height:19px; overflow:hidden; border-radius:8px; background:#edf3f1; }
+    .bar { height:100%; min-width:2px; border-radius:inherit; background:linear-gradient(90deg,#15ac92,var(--green)); }
+    .bar.amber { background:linear-gradient(90deg,#f1bd5c,var(--amber)); }
+    .bar.coral { background:linear-gradient(90deg,#df847a,var(--coral)); }
+    .value { text-align:right; font-weight:850; font-variant-numeric:tabular-nums; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; min-width:680px; border-collapse:collapse; }
+    th,td { padding:9px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+    th { color:var(--muted); font-size:12px; }
+    .num { text-align:right; font-variant-numeric:tabular-nums; }
+    tbody tr:hover { background:#f7fcfa; }
+    canvas { width:100%!important; max-height:300px; }
+    .empty { padding:28px; color:var(--muted); text-align:center; }
+    .footer { margin-top:18px; font-size:12px; }
+    @media (max-width:900px) { .filters{grid-template-columns:repeat(3,1fr)} .kpis{grid-template-columns:repeat(3,1fr)} .grid{grid-template-columns:1fr} }
+    @media (max-width:620px) { .shell{width:min(100% - 22px,1180px);padding-top:20px}.hero{display:block}.badge{display:inline-block;margin-top:12px}.filters,.kpis{grid-template-columns:1fr 1fr}.funnel-row{grid-template-columns:80px 1fr 56px} }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div><h1>抖音本地生活卖车转化看板</h1><p class="subtitle">从内容渠道下单、用户留资到销售跟进与最终成交的全链路转化分析。支持按入口、直播间、区域及产品线筛选和明细下钻。</p></div>
+      <span class="badge">● 模拟数据 Demo</span>
+    </header>
+    <p class="notice">本页面展示完全合成的模拟数据，仅用于作品集演示；用户、订单、区域、产品线、转化率和金额均不代表真实业务表现。</p>
+    <section class="filters" aria-label="筛选条件">
+      <label>内容入口<select id="channel"></select></label>
+      <label>直播间<select id="room"></select></label>
+      <label>区域<select id="region"></select></label>
+      <label>产品线<select id="product"></select></label>
+      <button id="reset" type="button">重置筛选</button>
+    </section>
+    <section class="kpis">
+      <article class="kpi"><div class="kpi-label">支付订单</div><div id="paid" class="kpi-value">—</div><div id="refund" class="kpi-note">—</div></article>
+      <article class="kpi"><div class="kpi-label">有效线索</div><div id="qualified" class="kpi-value">—</div><div id="leadRate" class="kpi-note">—</div></article>
+      <article class="kpi"><div class="kpi-label">已跟进销售机会</div><div id="engaged" class="kpi-value">—</div><div id="engageRate" class="kpi-note">—</div></article>
+      <article class="kpi"><div class="kpi-label">最终成交</div><div id="deals" class="kpi-value">—</div><div id="testDrive" class="kpi-note">—</div></article>
+      <article class="kpi"><div class="kpi-label">有效线索成交率</div><div id="conversion" class="kpi-value">—</div><div id="cycle" class="kpi-note">—</div></article>
+    </section>
+    <div class="grid">
+      <section class="section"><div class="section-header"><h2>转化漏斗</h2><span class="note">按订单所在用户群统计</span></div><div id="funnel" class="funnel"></div></section>
+      <section class="section"><div class="section-header"><h2>成交归因结构</h2><span class="note">仅统计已成交用户</span></div><canvas id="attribution"></canvas></section>
+    </div>
+    <div class="grid">
+      <section class="section"><div class="section-header"><h2>日度趋势</h2><span class="note">订单按下单日，成交按成交日</span></div><canvas id="trend"></canvas></section>
+      <section class="section"><div class="section-header"><h2>内容入口转化对比</h2><span class="note">成交 / 有效线索</span></div><div class="table-wrap"><table><thead><tr><th>内容入口</th><th class="num">支付订单</th><th class="num">有效线索</th><th class="num">成交</th><th class="num">成交率</th></tr></thead><tbody id="channels"></tbody></table></div></section>
+    </div>
+    <section class="section"><div class="section-header"><h2>用户级归因明细</h2><span id="detailCount" class="note">—</span></div><div class="table-wrap"><table><thead><tr><th>用户</th><th>内容入口</th><th>直播间</th><th>区域</th><th>产品线</th><th>订单状态</th><th>有效线索</th><th>已跟进</th><th>试驾</th><th>成交</th><th>归因类型</th></tr></thead><tbody id="details"></tbody></table></div></section>
+    <p class="footer">数据流水线：合成原始记录 → 用户级归因明细 → 漏斗与多维聚合 → 静态互动看板。详情见 README 和 <code>docs/attribution-rules.md</code>。</p>
+  </main>
+  <script>
+    const fmt=new Intl.NumberFormat("zh-CN"), pct=v=>v==null?"—":`${(v*100).toFixed(1)}%`;
+    const $=id=>document.getElementById(id); let rows=[],trendChart,attrChart;
+    const filters={channel:$("channel"),room:$("room"),region:$("region"),product:$("product")};
+    const n=items=>items.length, rate=(a,b)=>b?a/b:null;
+    function options(id,field,label){const values=[...new Set(rows.map(r=>r[field]).filter(Boolean))].sort();filters[id].innerHTML=`<option value="">${label}</option>`+values.map(v=>`<option value="${v}">${v}</option>`).join("")}
+    function active(){return rows.filter(r=>(!filters.channel.value||r.channel===filters.channel.value)&&(!filters.room.value||r.live_room===filters.room.value)&&(!filters.region.value||r.region===filters.region.value)&&(!filters.product.value||r.product_line===filters.product.value))}
+    function metrics(data){const paid=data.filter(r=>r.order_status!=="已退款"), leads=data.filter(r=>r.has_lead), qualified=data.filter(r=>r.is_qualified_lead), created=data.filter(r=>r.has_opportunity), engaged=data.filter(r=>r.has_engagement), test=data.filter(r=>r.has_test_drive), deals=data.filter(r=>r.has_deal), refund=data.filter(r=>r.order_status==="已退款"), cycles=deals.map(r=>r.close_cycle_days).filter(v=>v!=null);return{orders:n(data),paid:n(paid),leads:n(leads),qualified:n(qualified),created:n(created),engaged:n(engaged),test:n(test),deals:n(deals),refund:n(refund),refundRate:rate(n(refund),n(data)),leadRate:rate(n(leads),n(paid)),engageRate:rate(n(engaged),n(created)),conversion:rate(n(deals),n(qualified)),cycle:cycles.length?cycles.reduce((a,b)=>a+b,0)/cycles.length:null}}
+    function kpis(m){$("paid").textContent=fmt.format(m.paid);$("refund").textContent=`退款率 ${pct(m.refundRate)}`;$("qualified").textContent=fmt.format(m.qualified);$("leadRate").textContent=`支付订单留资率 ${pct(m.leadRate)}`;$("engaged").textContent=fmt.format(m.engaged);$("engageRate").textContent=`销售机会跟进率 ${pct(m.engageRate)}`;$("deals").textContent=fmt.format(m.deals);$("testDrive").textContent=`试驾用户 ${fmt.format(m.test)} 人`;$("conversion").textContent=pct(m.conversion);$("cycle").textContent=m.cycle==null?"暂无成交周期":`平均成交周期 ${m.cycle.toFixed(1)} 天`}
+    function funnel(m){const stages=[["订单",m.orders,""],["支付",m.paid,""],["留资",m.leads,""],["有效线索",m.qualified,""],["已跟进",m.engaged,"amber"],["试驾",m.test,"amber"],["成交",m.deals,"coral"]],base=Math.max(m.orders,1);$("funnel").innerHTML=stages.map(([label,value,style])=>`<div class="funnel-row"><b>${label}</b><div class="bar-bg"><div class="bar ${style}" style="width:${Math.max(value/base*100,1)}%"></div></div><div class="value">${fmt.format(value)}</div></div>`).join("")}
+    function charts(data){const dates=[...new Set(data.flatMap(r=>[r.order_date,r.deal_date]).filter(Boolean))].sort(),orders=dates.map(d=>data.filter(r=>r.order_date===d).length),deals=dates.map(d=>data.filter(r=>r.deal_date===d).length);if(trendChart)trendChart.destroy();trendChart=new Chart($("trend"),{type:"line",data:{labels:dates,datasets:[{label:"订单",data:orders,borderColor:"#087566",backgroundColor:"#087566",tension:.3,pointRadius:1.5},{label:"成交",data:deals,borderColor:"#d68a24",backgroundColor:"#d68a24",tension:.3,pointRadius:1.5}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{position:"bottom"}},scales:{x:{ticks:{maxTicksLimit:9}},y:{beginAtZero:true,ticks:{precision:0}}}}});const labels=["新增获客","存量激活","辅助转化"],values=labels.map(l=>data.filter(r=>r.attribution_type===l).length);if(attrChart)attrChart.destroy();attrChart=new Chart($("attribution"),{type:"doughnut",data:{labels,datasets:[{data:values,backgroundColor:["#087566","#d68a24","#c55a51"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}}}})}
+    function tables(data){const channels=[...new Set(data.map(r=>r.channel))].sort();$("channels").innerHTML=channels.map(channel=>{const m=metrics(data.filter(r=>r.channel===channel));return`<tr><td>${channel}</td><td class="num">${fmt.format(m.paid)}</td><td class="num">${fmt.format(m.qualified)}</td><td class="num">${fmt.format(m.deals)}</td><td class="num">${pct(m.conversion)}</td></tr>`}).join("")||`<tr><td colspan="5" class="empty">暂无匹配数据</td></tr>`;const latest=data.slice().sort((a,b)=>(b.order_date||"").localeCompare(a.order_date||"")).slice(0,12);$("detailCount").textContent=`当前筛选共 ${fmt.format(data.length)} 条模拟用户旅程，展示最近 12 条`;$("details").innerHTML=latest.map(r=>`<tr><td>${r.user_id}</td><td>${r.channel}</td><td>${r.live_room}</td><td>${r.region}</td><td>${r.product_line}</td><td>${r.order_status}</td><td>${r.is_qualified_lead?"是":"否"}</td><td>${r.has_engagement?"是":"否"}</td><td>${r.has_test_drive?"是":"否"}</td><td>${r.has_deal?"是":"否"}</td><td>${r.attribution_type||"—"}</td></tr>`).join("")||`<tr><td colspan="11" class="empty">暂无匹配数据</td></tr>`}
+    function render(){const data=active(),m=metrics(data);kpis(m);funnel(m);charts(data);tables(data)}
+    fetch("./data/demo/attribution_detail.json").then(r=>{if(!r.ok)throw new Error("无法加载模拟数据");return r.json()}).then(data=>{rows=data;options("channel","channel","全部内容入口");options("room","live_room","全部直播间 / 入口");options("region","region","全部区域");options("product","product_line","全部产品线");Object.values(filters).forEach(el=>el.addEventListener("change",render));$("reset").addEventListener("click",()=>{Object.values(filters).forEach(el=>el.value="");render()});render()}).catch(error=>document.querySelector("main").insertAdjacentHTML("afterbegin",`<p class="notice">看板加载失败：${error.message}。请通过本地 HTTP 服务或 GitHub Pages 打开页面。</p>`));
+  </script>
+</body>
+</html>

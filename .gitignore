@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Never commit production data, credentials, or local logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+.env
+.env.*
+secrets/
+private/
