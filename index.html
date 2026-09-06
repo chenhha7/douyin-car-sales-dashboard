@@ -3,103 +3,119 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="抖音本地生活卖车全链路转化看板（完全合成的模拟数据 Demo）">
-  <title>抖音本地生活卖车转化看板｜Demo</title>
+  <meta name="description" content="抖音本地生活卖车的经营转化、渠道价值与异常归因看板（完全合成数据 Demo）">
+  <title>抖音本地生活卖车经营看板｜Demo</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <style>
-    :root { --ink:#12302e; --muted:#647876; --bg:#f4f8f7; --card:#fff; --line:#d9e6e2; --green:#087566; --amber:#d68a24; --coral:#c55a51; --radius:16px; }
-    * { box-sizing:border-box; }
-    body { margin:0; color:var(--ink); background:var(--bg); font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Microsoft YaHei",sans-serif; }
-    .shell { width:min(1180px,calc(100% - 32px)); margin:0 auto; padding:30px 0 48px; }
-    .hero { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
-    h1 { margin:0 0 7px; font-size:clamp(25px,4vw,35px); letter-spacing:-.035em; }
-    h2 { margin:0; font-size:17px; }
-    .subtitle,.note,.footer { color:var(--muted); }
-    .subtitle { margin:0; max-width:760px; }
-    .badge { padding:7px 11px; border-radius:999px; background:#dcf3ec; color:#05665b; font-weight:800; white-space:nowrap; }
-    .notice { margin:18px 0 16px; padding:11px 14px; border:1px solid #f0d5a4; border-radius:12px; background:#fff9ed; color:#74501d; }
-    .filters,.section,.kpi { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); }
-    .filters { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; padding:15px; }
-    label { display:grid; gap:5px; color:var(--muted); font-size:12px; font-weight:800; }
-    select,button { width:100%; border-radius:9px; padding:10px; font:inherit; }
-    select { border:1px solid var(--line); color:var(--ink); background:#fff; }
-    button { align-self:end; border:0; color:#fff; background:var(--green); cursor:pointer; font-weight:800; }
-    button:hover { background:#055f55; }
-    .kpis { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin:16px 0; }
-    .kpi { padding:15px; }
-    .kpi-label { color:var(--muted); font-size:12px; font-weight:800; }
-    .kpi-value { margin-top:5px; font-size:26px; font-weight:850; letter-spacing:-.04em; }
-    .kpi-note { margin-top:3px; color:var(--muted); font-size:12px; }
-    .grid { display:grid; grid-template-columns:1.35fr .95fr; gap:16px; margin-bottom:16px; }
-    .section { padding:17px; }
-    .section-header { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:14px; }
-    .note { font-size:12px; }
-    .funnel { display:grid; gap:10px; }
-    .funnel-row { display:grid; grid-template-columns:90px 1fr 64px; gap:10px; align-items:center; }
-    .bar-bg { height:19px; overflow:hidden; border-radius:8px; background:#edf3f1; }
-    .bar { height:100%; min-width:2px; border-radius:inherit; background:linear-gradient(90deg,#15ac92,var(--green)); }
-    .bar.amber { background:linear-gradient(90deg,#f1bd5c,var(--amber)); }
-    .bar.coral { background:linear-gradient(90deg,#df847a,var(--coral)); }
-    .value { text-align:right; font-weight:850; font-variant-numeric:tabular-nums; }
-    .table-wrap { overflow-x:auto; }
-    table { width:100%; min-width:680px; border-collapse:collapse; }
-    th,td { padding:9px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
-    th { color:var(--muted); font-size:12px; }
-    .num { text-align:right; font-variant-numeric:tabular-nums; }
-    tbody tr:hover { background:#f7fcfa; }
-    canvas { width:100%!important; max-height:300px; }
-    .empty { padding:28px; color:var(--muted); text-align:center; }
-    .footer { margin-top:18px; font-size:12px; }
-    @media (max-width:900px) { .filters{grid-template-columns:repeat(3,1fr)} .kpis{grid-template-columns:repeat(3,1fr)} .grid{grid-template-columns:1fr} }
-    @media (max-width:620px) { .shell{width:min(100% - 22px,1180px);padding-top:20px}.hero{display:block}.badge{display:inline-block;margin-top:12px}.filters,.kpis{grid-template-columns:1fr 1fr}.funnel-row{grid-template-columns:80px 1fr 56px} }
+    :root{--ink:#132926;--muted:#647974;--bg:#f3f7f6;--card:#fff;--line:#dbe7e4;--green:#087567;--green2:#16a58e;--green-soft:#e6f5f0;--amber:#b96c13;--amber-soft:#fff4df;--coral:#bf554b;--coral-soft:#fbe9e7;--blue:#317fa4;--purple:#7160a5;--radius:15px;--shadow:0 5px 20px rgba(18,52,46,.045)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Microsoft YaHei",sans-serif}.shell{width:min(1440px,calc(100% - 36px));margin:0 auto;padding:30px 0 54px}.hero{display:flex;align-items:flex-start;justify-content:space-between;gap:22px}.eyebrow{margin:0 0 7px;color:var(--green);font-size:12px;font-weight:850;letter-spacing:.07em}.hero h1{margin:0;font-size:clamp(28px,4vw,40px);line-height:1.15;letter-spacing:-.05em}.subtitle{max-width:920px;margin:9px 0 0;color:var(--muted)}.badge{display:inline-flex;align-items:center;gap:7px;min-width:max-content;padding:7px 11px;border:1px solid #bae3d8;border-radius:999px;background:#dff4ed;color:#06675b;font-size:12px;font-weight:850}.badge:before{width:7px;height:7px;border-radius:50%;background:#14a88e;content:""}.notice{margin:16px 0 14px;padding:10px 13px;border:1px solid #ecd8af;border-radius:11px;background:#fffaf0;color:#705225;font-size:12px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 14px}.tab{width:auto;min-height:36px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:13px;font-weight:850}.tab:hover{border-color:#9fd5c8;color:var(--green);background:#f8fcfb}.tab[aria-selected="true"]{border-color:var(--green);background:var(--green);color:#fff}.filters,.section,.kpi,.insight{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}.filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;padding:14px}.filters label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:850}select,input,button{font:inherit}select,input{width:100%;min-height:37px;border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:#fff;color:var(--ink)}button{border:0;cursor:pointer}.filter-actions{display:grid;align-items:end}.reset{min-height:37px;border-radius:9px;background:var(--green);color:#fff;font-weight:850}.reset:hover{background:#056157}.tab-panel{margin-top:14px}.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;margin:0 0 14px}.kpi{position:relative;overflow:hidden;min-height:108px;padding:13px}.kpi:before{position:absolute;top:0;left:0;width:100%;height:4px;background:var(--green);content:""}.kpi:nth-child(2):before{background:var(--blue)}.kpi:nth-child(3):before{background:var(--purple)}.kpi:nth-child(4):before{background:var(--amber)}.kpi:nth-child(5):before{background:#d47b25}.kpi:nth-child(6):before{background:var(--coral)}.kpi-label,.label{color:var(--muted);font-size:11px;font-weight:850}.kpi-value{margin-top:5px;font-size:27px;font-weight:900;letter-spacing:-.05em;font-variant-numeric:tabular-nums}.kpi-note{margin-top:4px;color:var(--muted);font-size:11px}.insights{display:grid;grid-template-columns:1.18fr 1fr 1fr;gap:11px;margin-bottom:14px}.insight{padding:12px 14px}.insight b{display:block;margin-top:3px;font-size:15px}.insight p{margin:3px 0 0;color:var(--muted);font-size:11px}.warn{color:var(--coral)}.section{margin-bottom:14px;padding:16px}.section-header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:13px}.section-header>div{display:flex;align-items:baseline;gap:8px;min-width:0}.section h2{margin:0;font-size:17px;letter-spacing:-.02em}.section h3{margin:0;font-size:14px}.note{color:var(--muted);font-size:11px}.control-select{width:auto;min-width:165px;min-height:33px;padding:5px 28px 5px 8px;font-size:12px}.two-col{display:grid;grid-template-columns:1.18fr .82fr;gap:14px}.equal-col{grid-template-columns:1fr 1fr}.funnel{display:grid;gap:8px}.funnel-head,.funnel-row{display:grid;grid-template-columns:110px 1fr 70px 88px;gap:9px;align-items:center}.funnel-head{padding:0 0 2px;color:var(--muted);font-size:11px;font-weight:850}.funnel-head span:last-child,.funnel-head span:nth-last-child(2){text-align:right}.bar-bg{height:21px;overflow:hidden;border-radius:7px;background:#eef4f2}.bar{height:100%;min-width:2px;border-radius:inherit;background:linear-gradient(90deg,var(--green2),var(--green))}.bar.amber{background:linear-gradient(90deg,#efb85b,var(--amber))}.bar.coral{background:linear-gradient(90deg,#df857b,var(--coral))}.value,.num{text-align:right;font-variant-numeric:tabular-nums}.value{font-weight:900}.stage-rate{color:var(--muted);font-size:11px;text-align:right}.stage-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{min-height:95px;padding:11px;border:1px solid #e3eeeb;border-radius:11px;background:#f8fbfa}.stat:nth-child(2){background:var(--amber-soft);border-color:#f0d9b4}.stat:nth-child(3){background:var(--coral-soft);border-color:#f1cfcb}.stat b{display:block;margin-top:3px;font-size:17px;letter-spacing:-.03em}.stat span{color:var(--muted);font-size:11px}.stage-times{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:14px}.time-card{padding:10px;border:1px solid #e2eeea;border-radius:10px;background:#f9fcfb}.time-card.alert{border-color:#efd6ab;background:var(--amber-soft)}.time-card .time-value{margin-top:2px;font-size:16px;font-weight:900;letter-spacing:-.03em}.time-card p{margin:2px 0 0;color:var(--muted);font-size:10px}.coupon-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.coupon{padding:12px;border:1px solid #e2eeea;border-radius:11px;background:#f8fbfa}.coupon:nth-child(3){border-color:#bee2d8;background:var(--green-soft)}.coupon:nth-child(4){border-color:#efc8c4;background:var(--coral-soft)}.coupon b{display:block;margin-top:2px;font-size:19px;letter-spacing:-.04em}.coupon span{color:var(--muted);font-size:11px}.chart-box{height:278px}.table-wrap{overflow:auto}table{width:100%;min-width:700px;border-collapse:collapse}th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-size:11px;font-weight:850}tbody tr:hover{background:#f7fcfa}.good{color:var(--green);font-weight:850}.danger{color:var(--coral);font-weight:850}.muted{color:var(--muted)}.tag{display:inline-block;padding:2px 7px;border-radius:999px;background:var(--green-soft);color:#05665b;font-size:11px;font-weight:850}.tag.warn{background:var(--coral-soft);color:#9f3e35}.tag.amber{background:var(--amber-soft);color:#8b5a17}.tag.gray{background:#eff3f2;color:#657a75}.provider-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.table-title{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 10px}.table-title h3{margin:0;font-size:14px}.compact{min-width:670px}.empty{padding:22px;color:var(--muted);text-align:center}.footer{margin:18px 0 0;color:var(--muted);font-size:11px}.detail-table{min-width:1460px}.detail-table th,.detail-table td{font-size:12px}.definition{margin:0 0 14px;padding:12px 14px;border:1px solid #cde7df;border-radius:12px;background:#f4fbf8;color:#28534b;font-size:12px}.value-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.value-kpis .kpi:nth-child(4):before{background:var(--purple)}.value-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:14px}.diagnosis-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:14px}.diagnosis-grid .insight{min-height:100px}.diagnosis-controls{display:flex;gap:7px}.diagnosis-card{padding:12px;border:1px solid #e0ece9;border-radius:11px;background:#f8fbfa}.diagnosis-card b{display:block;margin-top:3px;font-size:17px}.diagnosis-card p{margin:3px 0 0;color:var(--muted);font-size:11px}.highlight{border-color:#efd6ab;background:var(--amber-soft)}.tab-panel[hidden]{display:none}
+    @media(max-width:1200px){.filters{grid-template-columns:repeat(4,minmax(0,1fr))}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.stage-times{grid-template-columns:repeat(3,minmax(0,1fr))}.provider-grid{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr}.diagnosis-grid{grid-template-columns:1fr 1fr}}@media(max-width:840px){.two-col,.equal-col{grid-template-columns:1fr}.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.insights{grid-template-columns:1fr}.hero{display:block}.badge{display:inline-flex;margin-top:12px}}@media(max-width:560px){.shell{width:min(100% - 22px,1440px);padding-top:20px}.filters,.kpis,.value-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.filter-actions{grid-column:span 2}.stage-times{grid-template-columns:repeat(2,minmax(0,1fr))}.section-header{align-items:flex-start;flex-direction:column}.control-select{width:100%}.diagnosis-controls{width:100%;flex-direction:column}.diagnosis-grid{grid-template-columns:1fr}.funnel-head,.funnel-row{grid-template-columns:82px 1fr 54px}.funnel-head span:last-child,.stage-rate{display:none}}
+  </style>
+  <style>
+    .decomp-formula{display:flex;align-items:stretch;gap:8px;overflow:auto;padding:2px 0 12px}.decomp-node{flex:1 0 140px;min-width:140px;padding:11px;border:1px solid #d9e9e4;border-radius:11px;background:#f8fbfa}.decomp-node.target{border-color:#a9d9cd;background:var(--green-soft)}.decomp-node .tree-label{display:block;color:var(--muted);font-size:11px;font-weight:850}.decomp-node b{display:block;margin-top:2px;font-size:17px;letter-spacing:-.03em}.decomp-node small{display:block;margin-top:2px;color:var(--muted);font-size:10px}.decomp-op{display:flex;align-items:center;color:var(--muted);font-size:19px;font-weight:850}.driver-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px;margin-top:13px}.drill-table{min-width:1120px}.diagnosis-grid{margin-top:13px}
+    @media(max-width:840px){.driver-grid{grid-template-columns:1fr}.decomp-formula{padding-bottom:8px}}
   </style>
 </head>
 <body>
   <main class="shell">
     <header class="hero">
-      <div><h1>抖音本地生活卖车转化看板</h1><p class="subtitle">从内容渠道下单、用户留资到销售跟进与最终成交的全链路转化分析。支持按入口、直播间、区域及产品线筛选和明细下钻。</p></div>
-      <span class="badge">● 模拟数据 Demo</span>
+      <div><p class="eyebrow">DOUYIN LOCAL LIFE · SALES CONVERSION</p><h1>抖音本地生活卖车经营看板</h1><p class="subtitle">从可识别的抖音转化入口到内部销售转化、渠道关联价值与指标异常定位，支持日常运营、服务商结算与投放资源调整。</p></div>
+      <span class="badge">完全合成数据 Demo</span>
     </header>
-    <p class="notice">本页面展示完全合成的模拟数据，仅用于作品集演示；用户、订单、区域、产品线、转化率和金额均不代表真实业务表现。</p>
-    <section class="filters" aria-label="筛选条件">
-      <label>内容入口<select id="channel"></select></label>
-      <label>直播间<select id="room"></select></label>
-      <label>区域<select id="region"></select></label>
-      <label>产品线<select id="product"></select></label>
-      <button id="reset" type="button">重置筛选</button>
+    <p class="notice">本仓库所有用户、服务商、直播间、门店、时间和指标均由脚本生成，仅保留真实业务的分析结构与口径关系，不代表任何实际经营表现。</p>
+
+    <nav class="tabs" role="tablist" aria-label="看板模块">
+      <button id="tabOperations" class="tab" type="button" role="tab" aria-selected="true" aria-controls="operationsPanel" data-tab="operations">经营看板</button>
+      <button id="tabValue" class="tab" type="button" role="tab" aria-selected="false" aria-controls="valuePanel" data-tab="value">渠道价值分析</button>
+      <button id="tabDiagnosis" class="tab" type="button" role="tab" aria-selected="false" aria-controls="diagnosisPanel" data-tab="diagnosis">异常归因与经营诊断</button>
+    </nav>
+
+    <section class="filters" aria-label="全局筛选条件">
+      <label>入口开始日期<input id="dateStart" type="date"></label><label>入口结束日期<input id="dateEnd" type="date"></label><label>服务商<select id="provider"></select></label><label>来源<select id="source"></select></label><label>内容资产<select id="asset"></select></label><label>直播间<select id="room"></select></label><label>订单状态<select id="couponStatusFilter"></select></label><label>产品系列<select id="product"></select></label><label>区域<select id="region"></select></label><label>城市<select id="city"></select></label><label>门店<select id="store"></select></label><div class="filter-actions"><button id="reset" class="reset" type="button">重置筛选</button></div>
     </section>
-    <section class="kpis">
-      <article class="kpi"><div class="kpi-label">支付订单</div><div id="paid" class="kpi-value">—</div><div id="refund" class="kpi-note">—</div></article>
-      <article class="kpi"><div class="kpi-label">有效线索</div><div id="qualified" class="kpi-value">—</div><div id="leadRate" class="kpi-note">—</div></article>
-      <article class="kpi"><div class="kpi-label">已跟进销售机会</div><div id="engaged" class="kpi-value">—</div><div id="engageRate" class="kpi-note">—</div></article>
-      <article class="kpi"><div class="kpi-label">最终成交</div><div id="deals" class="kpi-value">—</div><div id="testDrive" class="kpi-note">—</div></article>
-      <article class="kpi"><div class="kpi-label">有效线索成交率</div><div id="conversion" class="kpi-value">—</div><div id="cycle" class="kpi-note">—</div></article>
+
+    <section id="operationsPanel" class="tab-panel" role="tabpanel" aria-labelledby="tabOperations">
+      <section class="kpis" aria-label="核心经营指标">
+        <article class="kpi"><div class="kpi-label">商品订单数</div><div id="opsOrders" class="kpi-value">—</div><div id="opsOrderNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">毛线索数</div><div id="opsGrossLeads" class="kpi-value">—</div><div id="opsGrossNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">净线索数</div><div id="opsNetLeads" class="kpi-value">—</div><div id="opsNetNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">创建商机数</div><div id="opsCreated" class="kpi-value">—</div><div id="opsCreatedNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">开启商机数</div><div id="opsOpened" class="kpi-value">—</div><div id="opsOpenedNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">商机锁单数</div><div id="opsDeals" class="kpi-value">—</div><div id="opsDealsNote" class="kpi-note">—</div></article>
+      </section>
+
+      <section class="insights" aria-label="经营摘要">
+        <article class="insight"><span class="label">最大销售流失</span><b id="opsLargestLoss">—</b><p id="opsLargestLossNote">—</p></article>
+        <article class="insight"><span class="label">待优先承接</span><b id="opsPending" class="warn">—</b><p>已创建但尚未开启的商机，优先检查门店跟进覆盖与分单流程。</p></article>
+        <article class="insight"><span class="label">来源表现</span><b id="opsSourceInsight">—</b><p id="opsSourceNote">—</p></article>
+      </section>
+
+      <section class="section">
+        <div class="section-header"><div><h2>整体用户生命周期</h2><span class="note">仅从可被内部识别的团购券购买、留资开始分析；不包含抖音曝光、观看或点击人数。</span></div></div>
+        <div class="two-col"><div><h3 style="margin:0 0 10px">内部销售转化层</h3><div class="funnel-head"><span>阶段</span><span>用户规模</span><span>人数</span><span>环节转化</span></div><div id="opsFunnelRows" class="funnel"></div></div><div><h3 style="margin:0 0 10px">抖音可识别转化入口与团购券履约</h3><div id="couponStatus" class="coupon-grid"></div><div id="opsFunnelStats" class="stage-summary" style="margin-top:10px"></div></div></div>
+        <div id="opsEfficiency" class="stage-times"></div>
+      </section>
+
+      <div class="two-col equal-col">
+        <section class="section"><div class="section-header"><div><h2>经营趋势</h2><span class="note">按可识别入口日期观察；锁单相关效率默认只看成熟商机群。</span></div><select id="opsTrendMetric" class="control-select" aria-label="经营趋势指标"></select></div><div class="chart-box"><canvas id="opsTrendChart"></canvas></div></section>
+        <section class="section"><div class="section-header"><div><h2>来源转化对比</h2><span class="note">比较直播间的规模与私信的承接效率，不能只按单一指标加码。</span></div></div><div class="table-wrap"><table><thead><tr><th>来源</th><th class="num">订单</th><th class="num">毛线索</th><th class="num">创开率</th><th class="num">门店承接率</th><th class="num">锁单</th><th class="num">成熟商机锁单率</th></tr></thead><tbody id="sourceTable"></tbody></table></div></section>
+      </div>
+
+      <section class="section">
+        <div class="section-header"><div><h2>服务商与直播间经营</h2><span class="note">服务商、来源、直播间是不同维度：服务商用于结算与资源评估，直播间用于内容资产复盘。</span></div></div>
+        <div class="provider-grid">
+          <div><div class="table-title"><h3>服务商结算表现</h3><span class="note">结算锁单按归属服务商统计</span></div><div class="table-wrap"><table class="compact"><thead><tr><th>服务商</th><th class="num">订单</th><th class="num">毛线索</th><th class="num">创开率</th><th class="num">锁单</th><th class="num">成熟商机锁单率</th><th>建议</th></tr></thead><tbody id="providerTable"></tbody></table></div></div>
+          <div><div class="table-title"><h3>直播间锁单效果</h3><span class="note">仅统计直播间来源，作为投放力度与资源侧重的参考</span></div><div class="table-wrap"><table class="compact"><thead><tr><th>直播间</th><th>服务商</th><th class="num">订单</th><th class="num">创开率</th><th class="num">锁单</th><th class="num">成熟商机锁单率</th><th>建议</th></tr></thead><tbody id="roomTable"></tbody></table></div></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header"><div><h2>用户流转明细</h2><span id="detailCount" class="note">—</span></div></div>
+        <div class="table-wrap"><table class="detail-table"><thead><tr><th>用户</th><th>结算服务商</th><th>来源 / 内容资产</th><th>团购券状态</th><th>入口前 CRM 状态</th><th>入口时间</th><th>留资时间</th><th>创建商机</th><th>开启商机</th><th>门店下发</th><th>到店 / 试驾</th><th>锁单</th><th>当前阶段</th><th class="num">创建→开启</th></tr></thead><tbody id="details"></tbody></table></div>
+      </section>
     </section>
-    <div class="grid">
-      <section class="section"><div class="section-header"><h2>转化漏斗</h2><span class="note">按订单所在用户群统计</span></div><div id="funnel" class="funnel"></div></section>
-      <section class="section"><div class="section-header"><h2>成交归因结构</h2><span class="note">仅统计已成交用户</span></div><canvas id="attribution"></canvas></section>
-    </div>
-    <div class="grid">
-      <section class="section"><div class="section-header"><h2>日度趋势</h2><span class="note">订单按下单日，成交按成交日</span></div><canvas id="trend"></canvas></section>
-      <section class="section"><div class="section-header"><h2>内容入口转化对比</h2><span class="note">成交 / 有效线索</span></div><div class="table-wrap"><table><thead><tr><th>内容入口</th><th class="num">支付订单</th><th class="num">有效线索</th><th class="num">成交</th><th class="num">成交率</th></tr></thead><tbody id="channels"></tbody></table></div></section>
-    </div>
-    <section class="section"><div class="section-header"><h2>用户级归因明细</h2><span id="detailCount" class="note">—</span></div><div class="table-wrap"><table><thead><tr><th>用户</th><th>内容入口</th><th>直播间</th><th>区域</th><th>产品线</th><th>订单状态</th><th>有效线索</th><th>已跟进</th><th>试驾</th><th>成交</th><th>归因类型</th></tr></thead><tbody id="details"></tbody></table></div></section>
-    <p class="footer">数据流水线：合成原始记录 → 用户级归因明细 → 漏斗与多维聚合 → 静态互动看板。详情见 README 和 <code>docs/attribution-rules.md</code>。</p>
+
+    <section id="valuePanel" class="tab-panel" role="tabpanel" aria-labelledby="tabValue" hidden>
+      <p class="definition">分析对象是最终锁单且已关联抖音触达的用户。按抖音触达前 CRM 状态互斥分为新增贡献、战败激活和存量促转，用于判断渠道的关联贡献与价值分层，不表达严格因果增量。</p>
+      <section class="kpis value-kpis" aria-label="渠道价值指标">
+        <article class="kpi"><div class="kpi-label">抖音关联锁单</div><div id="valueDeals" class="kpi-value">—</div><div id="valueDealsNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">新增贡献锁单</div><div id="valueNew" class="kpi-value">—</div><div id="valueNewNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">战败激活锁单</div><div id="valueRevived" class="kpi-value">—</div><div id="valueRevivedNote" class="kpi-note">—</div></article>
+        <article class="kpi"><div class="kpi-label">存量促转锁单</div><div id="valueAssist" class="kpi-value">—</div><div id="valueAssistNote" class="kpi-note">—</div></article>
+      </section>
+      <section class="insights"><article class="insight"><span class="label">价值判断</span><b id="valueConclusion">—</b><p id="valueConclusionNote">—</p></article><article class="insight"><span class="label">新增用户贡献</span><b id="valueNewCycle">—</b><p>关注此前未进入销售流程的用户是否在触达后形成真实锁单。</p></article><article class="insight"><span class="label">存量决策促进</span><b id="valueAssistCycle">—</b><p>关注已有销售跟进用户的关联锁单周期与 7 日内锁单效率。</p></article></section>
+      <div class="value-grid">
+        <section class="section"><div class="section-header"><div><h2>锁单价值分层</h2><span class="note">三类标签由触达前状态映射</span></div></div><div class="chart-box"><canvas id="valueTypeChart"></canvas></div></section>
+        <section class="section"><div class="section-header"><div><h2>三类人群的转化效率</h2><span class="note">创建→锁单周期和 7 日锁单率仅统计成熟商机</span></div></div><div class="table-wrap"><table><thead><tr><th>价值类型</th><th>触达前 CRM 状态</th><th class="num">锁单</th><th class="num">占比</th><th class="num">中位创建→锁单</th><th class="num">成熟商机 7 日锁单率</th></tr></thead><tbody id="valueTypeTable"></tbody></table></div></section>
+      </div>
+      <section class="section"><div class="section-header"><div><h2>渠道价值拆解</h2><span class="note">判断哪类内容、直播间或服务商主要贡献新增、激活或促转。</span></div><select id="valueDimension" class="control-select" aria-label="渠道价值拆解维度"></select></div><div class="table-wrap"><table><thead><tr><th id="valueDimensionLabel">维度</th><th class="num">关联锁单</th><th class="num">新增贡献</th><th class="num">战败激活</th><th class="num">存量促转</th><th class="num">存量促转占比</th><th class="num">中位创建→锁单</th></tr></thead><tbody id="valueBreakdown"></tbody></table></div></section>
+    </section>
+
+    <section id="diagnosisPanel" class="tab-panel" role="tabpanel" aria-labelledby="tabDiagnosis" hidden>
+      <section class="section">
+        <div class="section-header"><div><h2>指标归因与经营诊断</h2><span class="note">先用指标拆解树定位规模或转化效率的驱动项，再按维度锁定异常来源，并下钻到具体用户旅程。</span></div><div class="diagnosis-controls"><select id="diagnosisMetric" class="control-select" aria-label="归因目标指标"></select><select id="diagnosisDimension" class="control-select" aria-label="归因拆解维度"></select></div></div>
+        <div class="diagnosis-grid"><article class="diagnosis-card highlight"><span class="label">目标指标变动</span><b id="diagFocus">—</b><p id="diagFocusNote">—</p></article><article class="diagnosis-card"><span class="label">核心驱动因子</span><b id="diagCompare">—</b><p id="diagCompareNote">—</p></article><article class="diagnosis-card"><span class="label">定位建议</span><b id="diagLoss">—</b><p id="diagAdvice">—</p></article></div>
+      </section>
+      <section class="section">
+        <div class="section-header"><div><h2>指标拆解树</h2><span class="note">订单、毛线索、退款等入口指标按可识别来源做加法贡献；内部销售指标按规模 × 转化效率拆解。</span></div></div>
+        <div id="diagFormula" class="decomp-formula" aria-label="指标拆解公式"></div>
+        <div class="driver-grid"><div><div class="table-title"><h3>因子贡献</h3><span class="note">对目标指标环比变动的影响</span></div><div class="table-wrap"><table><thead><tr><th>拆解因子</th><th class="num">前期</th><th class="num">本期</th><th class="num">因子变化</th><th class="num">归因贡献</th></tr></thead><tbody id="diagFactors"></tbody></table></div></div><div><div class="table-title"><h3>归因解读</h3><span class="note">按最大绝对贡献排序</span></div><div id="diagNarrative" class="definition">—</div></div></div>
+      </section>
+      <section class="section">
+        <div class="section-header"><div><h2>多维贡献拆分</h2><span class="note">将目标指标的变化按所选维度拆开；例如订单可按直播间 / 私信来源定位，开启商机可定位到服务商、直播间、门店或车系。</span></div></div>
+        <div class="table-wrap"><table><thead><tr><th id="diagnosisDimensionLabel">维度</th><th id="diagnosisPreviousLabel" class="num">前期指标</th><th id="diagnosisCurrentLabel" class="num">本期指标</th><th class="num">指标变化</th><th class="num">对整体变动贡献</th><th>优先检查</th></tr></thead><tbody id="exceptions"></tbody></table></div><p id="diagnosisNote" class="note"></p>
+      </section>
+      <section class="section">
+        <div class="section-header"><div><h2>关键日期数据佐证</h2><span class="note">展示最近 7 个可用入口日期：目标指标、与前一日对比、当日变动主因，以及内部销售环节的待转化规模。</span></div></div>
+        <div class="table-wrap"><table><thead><tr><th>入口日期</th><th id="dailyMetricLabel" class="num">目标指标</th><th class="num">较前一日</th><th id="dailyDimensionLabel">当日变动主因</th><th class="num">需优先跟进</th><th>当日业务解读</th></tr></thead><tbody id="diagDailyEvidence"></tbody></table></div>
+      </section>
+      <section class="section">
+        <div class="section-header"><div><h2>明细下钻</h2><span class="note">查看当前周期、选定维度下未进入目标环节的用户，直接落到可跟进的业务对象。</span></div><select id="diagnosisDrillGroup" class="control-select" aria-label="明细下钻对象"></select></div>
+        <div class="table-wrap"><table class="drill-table"><thead><tr><th>用户</th><th>来源 / 内容资产</th><th>服务商</th><th>门店</th><th>团购券状态</th><th>入口前 CRM 状态</th><th>入口时间</th><th>上一步节点</th><th>当前状态</th><th class="num">创建→开启</th></tr></thead><tbody id="diagnosisDrill"></tbody></table></div>
+      </section>
+    </section>
+    <p class="footer">数据流程：完全合成的可识别抖音入口与销售事件 → 用户级归属、时效、成熟队列加工 → 服务商 / 来源 / 直播间聚合 → 静态交互看板。页面不包含真实业务数据、渠道编码、生产系统信息或凭据。</p>
   </main>
-  <script>
-    const fmt=new Intl.NumberFormat("zh-CN"), pct=v=>v==null?"—":`${(v*100).toFixed(1)}%`;
-    const $=id=>document.getElementById(id); let rows=[],trendChart,attrChart;
-    const filters={channel:$("channel"),room:$("room"),region:$("region"),product:$("product")};
-    const n=items=>items.length, rate=(a,b)=>b?a/b:null;
-    function options(id,field,label){const values=[...new Set(rows.map(r=>r[field]).filter(Boolean))].sort();filters[id].innerHTML=`<option value="">${label}</option>`+values.map(v=>`<option value="${v}">${v}</option>`).join("")}
-    function active(){return rows.filter(r=>(!filters.channel.value||r.channel===filters.channel.value)&&(!filters.room.value||r.live_room===filters.room.value)&&(!filters.region.value||r.region===filters.region.value)&&(!filters.product.value||r.product_line===filters.product.value))}
-    function metrics(data){const paid=data.filter(r=>r.order_status!=="已退款"), leads=data.filter(r=>r.has_lead), qualified=data.filter(r=>r.is_qualified_lead), created=data.filter(r=>r.has_opportunity), engaged=data.filter(r=>r.has_engagement), test=data.filter(r=>r.has_test_drive), deals=data.filter(r=>r.has_deal), refund=data.filter(r=>r.order_status==="已退款"), cycles=deals.map(r=>r.close_cycle_days).filter(v=>v!=null);return{orders:n(data),paid:n(paid),leads:n(leads),qualified:n(qualified),created:n(created),engaged:n(engaged),test:n(test),deals:n(deals),refund:n(refund),refundRate:rate(n(refund),n(data)),leadRate:rate(n(leads),n(paid)),engageRate:rate(n(engaged),n(created)),conversion:rate(n(deals),n(qualified)),cycle:cycles.length?cycles.reduce((a,b)=>a+b,0)/cycles.length:null}}
-    function kpis(m){$("paid").textContent=fmt.format(m.paid);$("refund").textContent=`退款率 ${pct(m.refundRate)}`;$("qualified").textContent=fmt.format(m.qualified);$("leadRate").textContent=`支付订单留资率 ${pct(m.leadRate)}`;$("engaged").textContent=fmt.format(m.engaged);$("engageRate").textContent=`销售机会跟进率 ${pct(m.engageRate)}`;$("deals").textContent=fmt.format(m.deals);$("testDrive").textContent=`试驾用户 ${fmt.format(m.test)} 人`;$("conversion").textContent=pct(m.conversion);$("cycle").textContent=m.cycle==null?"暂无成交周期":`平均成交周期 ${m.cycle.toFixed(1)} 天`}
-    function funnel(m){const stages=[["订单",m.orders,""],["支付",m.paid,""],["留资",m.leads,""],["有效线索",m.qualified,""],["已跟进",m.engaged,"amber"],["试驾",m.test,"amber"],["成交",m.deals,"coral"]],base=Math.max(m.orders,1);$("funnel").innerHTML=stages.map(([label,value,style])=>`<div class="funnel-row"><b>${label}</b><div class="bar-bg"><div class="bar ${style}" style="width:${Math.max(value/base*100,1)}%"></div></div><div class="value">${fmt.format(value)}</div></div>`).join("")}
-    function charts(data){const dates=[...new Set(data.flatMap(r=>[r.order_date,r.deal_date]).filter(Boolean))].sort(),orders=dates.map(d=>data.filter(r=>r.order_date===d).length),deals=dates.map(d=>data.filter(r=>r.deal_date===d).length);if(trendChart)trendChart.destroy();trendChart=new Chart($("trend"),{type:"line",data:{labels:dates,datasets:[{label:"订单",data:orders,borderColor:"#087566",backgroundColor:"#087566",tension:.3,pointRadius:1.5},{label:"成交",data:deals,borderColor:"#d68a24",backgroundColor:"#d68a24",tension:.3,pointRadius:1.5}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{position:"bottom"}},scales:{x:{ticks:{maxTicksLimit:9}},y:{beginAtZero:true,ticks:{precision:0}}}}});const labels=["新增获客","存量激活","辅助转化"],values=labels.map(l=>data.filter(r=>r.attribution_type===l).length);if(attrChart)attrChart.destroy();attrChart=new Chart($("attribution"),{type:"doughnut",data:{labels,datasets:[{data:values,backgroundColor:["#087566","#d68a24","#c55a51"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}}}})}
-    function tables(data){const channels=[...new Set(data.map(r=>r.channel))].sort();$("channels").innerHTML=channels.map(channel=>{const m=metrics(data.filter(r=>r.channel===channel));return`<tr><td>${channel}</td><td class="num">${fmt.format(m.paid)}</td><td class="num">${fmt.format(m.qualified)}</td><td class="num">${fmt.format(m.deals)}</td><td class="num">${pct(m.conversion)}</td></tr>`}).join("")||`<tr><td colspan="5" class="empty">暂无匹配数据</td></tr>`;const latest=data.slice().sort((a,b)=>(b.order_date||"").localeCompare(a.order_date||"")).slice(0,12);$("detailCount").textContent=`当前筛选共 ${fmt.format(data.length)} 条模拟用户旅程，展示最近 12 条`;$("details").innerHTML=latest.map(r=>`<tr><td>${r.user_id}</td><td>${r.channel}</td><td>${r.live_room}</td><td>${r.region}</td><td>${r.product_line}</td><td>${r.order_status}</td><td>${r.is_qualified_lead?"是":"否"}</td><td>${r.has_engagement?"是":"否"}</td><td>${r.has_test_drive?"是":"否"}</td><td>${r.has_deal?"是":"否"}</td><td>${r.attribution_type||"—"}</td></tr>`).join("")||`<tr><td colspan="11" class="empty">暂无匹配数据</td></tr>`}
-    function render(){const data=active(),m=metrics(data);kpis(m);funnel(m);charts(data);tables(data)}
-    fetch("./data/demo/attribution_detail.json").then(r=>{if(!r.ok)throw new Error("无法加载模拟数据");return r.json()}).then(data=>{rows=data;options("channel","channel","全部内容入口");options("room","live_room","全部直播间 / 入口");options("region","region","全部区域");options("product","product_line","全部产品线");Object.values(filters).forEach(el=>el.addEventListener("change",render));$("reset").addEventListener("click",()=>{Object.values(filters).forEach(el=>el.value="");render()});render()}).catch(error=>document.querySelector("main").insertAdjacentHTML("afterbegin",`<p class="notice">看板加载失败：${error.message}。请通过本地 HTTP 服务或 GitHub Pages 打开页面。</p>`));
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

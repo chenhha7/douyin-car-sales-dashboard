@@ -1,11 +1,14 @@
 {
   "status": "passed",
-  "record_count": 720,
+  "record_count": 1200,
   "checks": {
     "unique_user_and_order_ids": true,
-    "stage_sequence": true,
-    "refunds_excluded_from_funnel": true,
-    "attribution_consistency": true,
+    "lifecycle_and_observation_sequence": true,
+    "order_and_lead_scope_consistency": true,
+    "crm_value_mapping_consistency": true,
+    "settlement_provider_consistency": true,
+    "source_action_and_order_status_scope": true,
+    "content_asset_completeness": true,
     "synthetic_data_markers": true,
     "production_marker_scan": true
   },
