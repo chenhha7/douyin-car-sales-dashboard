@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data" / "demo" / "raw_funnel_records.json"
 SEED = 20260906
-OBSERVATION_END = datetime(2026, 8, 6, 23, 59)
+OBSERVATION_END = datetime(2026, 9, 9, 23, 59)
+SOP_LAUNCH_DATE = datetime(2026, 7, 14, 0, 0)
 
 # The source structure follows the reviewed business framing: live rooms are the
 # main scale driver; direct messages are smaller but receive a higher share of
@@ -60,6 +61,12 @@ REGIONS = {
     "区域 B": {"城市 B1": ["演示门店 B1-1", "演示门店 B1-2"], "城市 B2": ["演示门店 B2-1", "演示门店 B2-2"]},
     "区域 C": {"城市 C1": ["演示门店 C1-1", "演示门店 C1-2"], "城市 C2": ["演示门店 C2-1", "演示门店 C2-2"]},
     "区域 D": {"城市 D1": ["演示门店 D1-1", "演示门店 D1-2"], "城市 D2": ["演示门店 D2-1", "演示门店 D2-2"]},
+}
+SOP_EFFECT_BY_REGION = {
+    "区域 A": {"open": 0.18, "assign": 0.06, "appointment": 0.08, "deal": 0.05, "fast_weight": 0.84},
+    "区域 B": {"open": 0.15, "assign": 0.05, "appointment": 0.06, "deal": 0.04, "fast_weight": 0.78},
+    "区域 C": {"open": 0.12, "assign": 0.04, "appointment": 0.05, "deal": 0.03, "fast_weight": 0.72},
+    "区域 D": {"open": 0.09, "assign": 0.03, "appointment": 0.04, "deal": 0.02, "fast_weight": 0.68},
 }
 PRODUCTS = [
     {"name": "产品系列 A", "weight": 0.42, "open_adjustment": 0.02, "deal_adjustment": 0.02},
@@ -127,7 +134,7 @@ def generate_records(sample_size: int = 1200) -> list[dict]:
         provider = choose(rng, SERVICE_PROVIDERS)
         product = choose(rng, PRODUCTS)
         crm_state = choose(rng, CRM_STATES)
-        touch_at = start + timedelta(days=rng.randrange(70), hours=rng.randrange(12), minutes=rng.randrange(60))
+        touch_at = start + timedelta(days=rng.randrange(104), hours=rng.randrange(12), minutes=rng.randrange(60))
         region = rng.choice(list(REGIONS))
         city = rng.choice(list(REGIONS[region]))
         store = rng.choice(REGIONS[region][city])
@@ -157,20 +164,27 @@ def generate_records(sample_size: int = 1200) -> list[dict]:
         if has_lead and rng.random() < clamp(source["create_rate"] + crm_state["create_adjustment"]):
             created_at = before_observation(lead_at + timedelta(minutes=rng.randint(15, 1_440)))
             if created_at:
+                sop_effect = SOP_EFFECT_BY_REGION[region] if created_at >= SOP_LAUNCH_DATE else None
                 open_rate = source["open_rate"] + provider["open_adjustment"] + product["open_adjustment"]
                 if store_issue:
                     open_rate -= 0.18
                 if provider_issue:
                     open_rate -= 0.10
+                if sop_effect:
+                    open_rate += sop_effect["open"]
                 if rng.random() < clamp(open_rate):
+                    fast_weight = sop_effect["fast_weight"] if sop_effect else 0.55
                     open_delay = rng.choices(
-                        [rng.randint(10, 240), rng.randint(241, 2_880)], weights=[0.55, 0.45], k=1
+                        [rng.randint(10, 240), rng.randint(241, 2_880)], weights=[fast_weight, 1 - fast_weight], k=1
                     )[0]
                     opened_at = before_observation(created_at + timedelta(minutes=open_delay))
                     assign_rate = 0.91 - (0.10 if store_issue or provider_issue else 0.0)
+                    if sop_effect:
+                        assign_rate += sop_effect["assign"]
                     if opened_at and rng.random() < clamp(assign_rate):
                         store_assigned_at = before_observation(opened_at + timedelta(hours=rng.randint(1, 36)))
-                    if store_assigned_at and rng.random() < source["appointment_rate"]:
+                    appointment_rate = source["appointment_rate"] + (sop_effect["appointment"] if sop_effect else 0.0)
+                    if store_assigned_at and rng.random() < clamp(appointment_rate):
                         appointment_at = before_observation(store_assigned_at + timedelta(hours=rng.randint(4, 72)))
                         if appointment_at and rng.random() < source["test_rate"]:
                             test_at = before_observation(appointment_at + timedelta(hours=rng.randint(8, 144)))
@@ -178,6 +192,8 @@ def generate_records(sample_size: int = 1200) -> list[dict]:
                                 deal_rate = (
                                     source["deal_rate"] + provider["deal_adjustment"] + product["deal_adjustment"]
                                 ) * crm_state["deal_multiplier"]
+                                if sop_effect:
+                                    deal_rate += sop_effect["deal"]
                                 if rng.random() < clamp(deal_rate):
                                     deal_at = before_observation(
                                         test_at + timedelta(days=rng.randint(2, 7), hours=rng.randint(0, 12))
@@ -209,6 +225,8 @@ def generate_records(sample_size: int = 1200) -> list[dict]:
             "refund_at": iso(refund_at),
             "historical_opportunity_at": iso(prior_opportunity_at),
             "observation_end_at": iso(OBSERVATION_END),
+            "sop_launch_date": day(SOP_LAUNCH_DATE),
+            "sop_status_at_created": "宣贯后" if created_at and created_at >= SOP_LAUNCH_DATE else "宣贯前" if created_at else None,
             "touch_date": day(touch_at),
             "order_date": day(order_at),
             "lead_date": day(lead_at),

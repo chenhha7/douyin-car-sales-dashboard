@@ -19,6 +19,7 @@
 | 抖音触达与行为 | `douyin_touch_at`、`source_label`、`douyin_action_type`、`content_asset`、`live_room` | 区分直播间或私信触达，以及团购券购买 / 留资行为 |
 | 团购券订单 | `order_at`、`order_status`、`refund_at`、`paid_amount` | 统计订单、未使用、核销和退款 |
 | 内部销售节点 | `lead_at`、`opportunity_created_at`、`opportunity_engaged_at`、`store_assigned_at`、`appointment_at`、`test_drive_at`、`deal_at` | 计算销售漏斗与各环节时效 |
+| SOP cohort 标记 | `sop_launch_date`、`sop_status_at_created` | 演示区域门店 SOP 宣贯上线前后的固定 cohort 评估；日期和效果均为合成场景 |
 | 触达前 CRM 状态 | `crm_status_before_douyin`、`historical_opportunity_at`、`prior_opportunity_status` | 支撑新增贡献、战败激活和存量促转的价值分层 |
 | 归属与结算 | `service_provider`、`settlement_provider`、`region`、`city`、`store`、`product_line` | 支撑服务商结算、直播间复盘和异常下钻 |
 

@@ -15,6 +15,13 @@
     .decomp-formula{display:flex;align-items:stretch;gap:8px;overflow:auto;padding:2px 0 12px}.decomp-node{flex:1 0 140px;min-width:140px;padding:11px;border:1px solid #d9e9e4;border-radius:11px;background:#f8fbfa}.decomp-node.target{border-color:#a9d9cd;background:var(--green-soft)}.decomp-node .tree-label{display:block;color:var(--muted);font-size:11px;font-weight:850}.decomp-node b{display:block;margin-top:2px;font-size:17px;letter-spacing:-.03em}.decomp-node small{display:block;margin-top:2px;color:var(--muted);font-size:10px}.decomp-op{display:flex;align-items:center;color:var(--muted);font-size:19px;font-weight:850}.driver-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px;margin-top:13px}.drill-table{min-width:1120px}.diagnosis-grid{margin-top:13px}
     @media(max-width:840px){.driver-grid{grid-template-columns:1fr}.decomp-formula{padding-bottom:8px}}
   </style>
+  <style>
+    .sop-section{border-color:#c9e6de;background:linear-gradient(180deg,#fff 0%,#f7fcfa 100%)}.sop-timeline{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;align-items:center;gap:6px;margin:2px 0 14px}.sop-step{min-height:74px;padding:11px 12px;border:1px solid #dcece7;border-radius:11px;background:#fff}.sop-step.launch{border-color:#92d5c4;background:var(--green-soft)}.sop-step .sop-date{display:block;color:var(--green);font-size:11px;font-weight:900}.sop-step b{display:block;margin:2px 0;font-size:13px}.sop-step span:last-child{display:block;color:var(--muted);font-size:11px}.sop-arrow{color:#8aa7a0;font-size:22px;text-align:center}.sop-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.sop-kpi{padding:13px;border:1px solid #dcebe6;border-radius:12px;background:#fff}.sop-kpi .sop-value{display:block;margin:3px 0 1px;font-size:22px;font-weight:900;letter-spacing:-.04em}.sop-kpi .sop-note{display:block;color:var(--muted);font-size:11px}.sop-delta{font-weight:850}.sop-delta.good{color:var(--green)}.sop-delta.warn{color:var(--coral)}.sop-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:14px}.sop-chart-box{height:284px}.sop-reading{padding:14px;border:1px solid #dcebe6;border-radius:12px;background:#fff}.sop-reading b{display:block;margin:3px 0 5px;font-size:15px}.sop-reading p{margin:0;color:var(--muted);font-size:12px}.sop-reading .sop-method{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:11px}.sop-table{min-width:970px}.sop-footnote{margin:10px 0 0;color:var(--muted);font-size:11px}.two-col>*,.provider-grid>*,.sop-grid>*{min-width:0}
+    @media(max-width:840px){.sop-grid{grid-template-columns:1fr}.sop-timeline{grid-template-columns:1fr;gap:5px}.sop-arrow{transform:rotate(90deg);height:18px}.sop-kpis{grid-template-columns:1fr}}
+  </style>
+  <style>
+    :root{--font-ui:"Microsoft YaHei UI","PingFang SC","Noto Sans CJK SC","Source Han Sans SC",system-ui,sans-serif;--font-num:"Aptos","Segoe UI Variable","Microsoft YaHei UI",system-ui,sans-serif}body{font-family:var(--font-ui);font-size:14px;line-height:1.6;letter-spacing:.003em}.hero h1,.section h2{font-weight:700;letter-spacing:-.035em}.eyebrow,.badge,.kpi-label,.label,.filters label,th,.funnel-head{font-weight:600;letter-spacing:.03em}.kpi-value,.value,.time-value,.coupon b,.stat b,.sop-kpi .sop-value{font-family:var(--font-num);font-weight:700}.lifecycle-section{padding:18px}.lifecycle-primary{padding:15px 16px 14px;border:1px solid #dceae6;border-radius:13px;background:#fbfdfc}.lifecycle-subhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}.lifecycle-subhead h3{font-size:15px;font-weight:700}.lifecycle-subhead span{color:var(--muted);font-size:11px}.lifecycle-section .funnel{gap:10px}.lifecycle-section .funnel-head,.lifecycle-section .funnel-row{grid-template-columns:116px 1fr 76px 90px}.lifecycle-section .stage-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.lifecycle-section .stat{min-height:0;padding:11px 12px;border:0;border-radius:0;background:transparent!important}.lifecycle-section .stat+.stat{border-left:1px solid var(--line)}.lifecycle-section .stat b{font-size:17px}.lifecycle-support{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}.lifecycle-support-block{padding:15px 16px;border:1px solid #e1ece9;border-radius:13px;background:#fff}.lifecycle-support-block .section-header{margin-bottom:10px}.lifecycle-support-block h3{font-size:14px;font-weight:700}.lifecycle-support-block .stage-times{grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}.lifecycle-support-block .time-card{min-height:0;padding:2px 11px 5px;border:0;border-radius:0;background:transparent!important}.lifecycle-support-block .time-card+.time-card{border-left:1px solid var(--line)}.lifecycle-support-block .time-card.alert{background:transparent!important;border-color:var(--line)}.lifecycle-support-block .time-card .time-value{margin-top:4px;font-size:16px}.lifecycle-support-block .time-card p{font-size:10px}.coupon-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0}.coupon-strip .coupon{padding:7px 10px;border:0;border-radius:0;background:transparent!important}.coupon-strip .coupon:nth-child(2n){border-left:1px solid var(--line)}.coupon-strip .coupon:nth-child(n+3){border-top:1px solid var(--line)}.coupon-strip .coupon b{font-size:18px}.coupon-strip .coupon span{font-size:10px}@media(max-width:1200px){.lifecycle-support{grid-template-columns:1fr}.lifecycle-support-block .stage-times{grid-template-columns:repeat(5,minmax(0,1fr))}}@media(max-width:840px){.lifecycle-primary{padding:13px}.lifecycle-subhead{align-items:flex-start;flex-direction:column;gap:3px}.lifecycle-section .stage-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.lifecycle-section .stat:nth-child(3){border-left:0;border-top:1px solid var(--line)}.lifecycle-section .stat:nth-child(4){border-top:1px solid var(--line)}.lifecycle-support-block .stage-times{grid-template-columns:repeat(2,minmax(0,1fr))}.lifecycle-support-block .time-card:nth-child(3),.lifecycle-support-block .time-card:nth-child(5){border-left:0;border-top:1px solid var(--line)}.lifecycle-support-block .time-card:nth-child(4){border-top:1px solid var(--line)}}
+  </style>
 </head>
 <body>
   <main class="shell">
@@ -50,10 +57,38 @@
         <article class="insight"><span class="label">来源表现</span><b id="opsSourceInsight">—</b><p id="opsSourceNote">—</p></article>
       </section>
 
-      <section class="section">
-        <div class="section-header"><div><h2>整体用户生命周期</h2><span class="note">仅从可被内部识别的团购券购买、留资开始分析；不包含抖音曝光、观看或点击人数。</span></div></div>
-        <div class="two-col"><div><h3 style="margin:0 0 10px">内部销售转化层</h3><div class="funnel-head"><span>阶段</span><span>用户规模</span><span>人数</span><span>环节转化</span></div><div id="opsFunnelRows" class="funnel"></div></div><div><h3 style="margin:0 0 10px">抖音可识别转化入口与团购券履约</h3><div id="couponStatus" class="coupon-grid"></div><div id="opsFunnelStats" class="stage-summary" style="margin-top:10px"></div></div></div>
-        <div id="opsEfficiency" class="stage-times"></div>
+      <section class="section lifecycle-section">
+        <div class="section-header"><div><h2>整体用户生命周期</h2><span class="note">先判断销售承接是否接住高意向用户，再补充观察团购券履约；不包含抖音曝光、观看或点击人数。</span></div></div>
+        <div class="lifecycle-primary">
+          <div class="lifecycle-subhead"><h3>销售承接漏斗</h3><span>从毛线索到锁单的连续销售路径；净线索率保留在上方核心指标中。</span></div>
+          <div class="funnel-head"><span>阶段</span><span>用户规模</span><span>人数</span><span>环节转化</span></div><div id="opsFunnelRows" class="funnel"></div>
+          <div id="opsFunnelStats" class="stage-summary"></div>
+        </div>
+        <div class="lifecycle-support">
+          <section class="lifecycle-support-block"><div class="section-header"><div><h3>关键承接时效</h3><span class="note">判断瓶颈发生在创建、开启、下发还是到店推进。</span></div></div><div id="opsEfficiency" class="stage-times"></div></section>
+          <section class="lifecycle-support-block"><div class="section-header"><div><h3>团购券履约</h3><span class="note">用于观察订单支付后的使用、核销与退款状态。</span></div></div><div id="couponStatus" class="coupon-grid coupon-strip"></div></section>
+        </div>
+      </section>
+
+      <section class="section sop-section" aria-labelledby="sopTitle">
+        <div class="section-header"><div><h2 id="sopTitle">区域承接优化 · 门店 SOP 宣贯效果</h2><span class="note">固定同期用户组对比：以“创建销售记录”为起点，比较机制上线前后的商机开启与成熟锁单变化。</span></div></div>
+        <div class="sop-timeline" aria-label="SOP 宣贯评估时间线">
+          <div class="sop-step"><span class="sop-date">2026-06-16 — 07-13</span><b>上线前同期用户组</b><span>取创建销售记录的用户</span></div><div class="sop-arrow">→</div>
+          <div class="sop-step launch"><span class="sop-date">2026-07-14</span><b>门店 SOP 宣贯上线</b><span>明确门店接待、跟进与反馈机制</span></div><div class="sop-arrow">→</div>
+          <div class="sop-step"><span class="sop-date">2026-07-14 — 08-10</span><b>上线后同期用户组</b><span>保持相同的 28 天比较窗口</span></div><div class="sop-arrow">→</div>
+          <div class="sop-step"><span class="sop-date">截至 2026-09-09</span><b>30 日结果回看</b><span>保证后组均已具备 30 天观察期</span></div>
+        </div>
+        <div class="sop-kpis" aria-label="SOP 上线前后核心指标">
+          <article class="sop-kpi"><span class="label">3 日创开率</span><span id="sopD3Open" class="sop-value">—</span><span id="sopD3OpenNote" class="sop-note">—</span></article>
+          <article class="sop-kpi"><span class="label">中位创建 → 开启时长</span><span id="sopMedianOpen" class="sop-value">—</span><span id="sopMedianOpenNote" class="sop-note">—</span></article>
+          <article class="sop-kpi"><span class="label">30 日内锁单率</span><span id="sopD30Deal" class="sop-value">—</span><span id="sopD30DealNote" class="sop-note">—</span></article>
+        </div>
+        <div class="sop-grid">
+          <div><h3 style="margin:0 0 10px">各区域 3 日创开率：上线前后对比</h3><div class="sop-chart-box"><canvas id="sopRegionChart"></canvas></div></div>
+          <aside class="sop-reading"><span class="label">经营解读</span><b id="sopNarrative">—</b><p id="sopNarrativeNote">—</p><p class="sop-method">该模块回答的不是“有没有订单”，而是门店是否在创建销售记录后及时完成商机开启。若某区域的开启效率改善而 30 日内锁单率未同步改善，应继续查看到店邀约、试驾和后续销售推进。</p></aside>
+        </div>
+        <div class="table-wrap" style="margin-top:14px"><table class="sop-table"><thead><tr><th>区域</th><th class="num">上线前创建</th><th class="num">前 3 日创开率</th><th class="num">前 30 日内锁单率</th><th class="num">上线后创建</th><th class="num">后 3 日创开率</th><th class="num">后 30 日内锁单率</th><th class="num">创开率变化</th><th class="num">锁单率变化</th><th>业务解读</th></tr></thead><tbody id="sopRegionTable"></tbody></table></div>
+        <p class="sop-footnote">公开 Demo 中，SOP 上线日期、区域差异与结果均为合成场景，用于展示同期用户组评估方式；真实复盘应替换为实际宣贯日期、门店覆盖清单与可追溯的用户级数据。</p>
       </section>
 
       <div class="two-col equal-col">
