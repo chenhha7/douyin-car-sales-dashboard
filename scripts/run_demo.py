@@ -20,6 +20,7 @@ def run(script: str) -> None:
 def main() -> None:
     run("generate_demo_data.py")
     run("transform_data.py")
+    run("build_weekly_attribution.py")
     run("validate_data.py")
     print("\nDemo data pipeline completed successfully.")
 

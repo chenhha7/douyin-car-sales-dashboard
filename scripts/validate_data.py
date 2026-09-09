@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data" / "demo"
 DETAIL_FILE = DATA_DIR / "attribution_detail.json"
 REPORT_FILE = DATA_DIR / "data_quality_report.json"
+WEEKLY_FILE = DATA_DIR / "weekly_attribution_result.json"
 FORBIDDEN_PATTERNS = [r"(?i)internal[-_ ]?(token|endpoint|table)", r"(?i)production[-_ ]?(token|endpoint|table)", r"(?i)channel[-_ ]?code"]
 STAGES = ["lead_at", "opportunity_created_at", "opportunity_engaged_at", "store_assigned_at", "appointment_at", "test_drive_at", "deal_at"]
 EXPECTED_SOURCES = {"直播间", "私信"}
@@ -29,6 +30,69 @@ EXPECTED_ACTION_TYPES = {"留资", "团购券购买", "团购券购买 + 留资"
 
 def parse_time(value: str | None) -> datetime | None:
     return datetime.fromisoformat(value) if value else None
+
+
+def validate_weekly_attribution(errors: list[str]) -> dict[str, bool]:
+    checks = {
+        "weekly_payload_exists": False,
+        "weekly_payload_is_synthetic": False,
+        "weekly_period_and_tree_completeness": False,
+        "weekly_dimension_drilldown_and_task_completeness": False,
+        "weekly_strategy_effect_completeness": False,
+        "weekly_public_marker_scan": False,
+    }
+    if not WEEKLY_FILE.exists():
+        errors.append("Weekly attribution payload is missing.")
+        return checks
+    checks["weekly_payload_exists"] = True
+    try:
+        payload = json.loads(WEEKLY_FILE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"Weekly attribution payload is invalid JSON: {exc}.")
+        return checks
+
+    metadata = payload.get("metadata", {})
+    if metadata.get("is_synthetic") is not True:
+        errors.append("Weekly attribution payload is not marked synthetic.")
+    else:
+        checks["weekly_payload_is_synthetic"] = True
+
+    weeks = payload.get("week_comparison", {})
+    current, previous = weeks.get("current", {}), weeks.get("previous", {})
+    tree = payload.get("tree", {})
+    tree_rows = tree.get("rows", [])
+    if not all(current.get(key) for key in ("start", "end")) or not all(previous.get(key) for key in ("start", "end")):
+        errors.append("Weekly attribution comparison periods are incomplete.")
+    elif not tree.get("formula") or not tree_rows or not all({"label", "previous", "current", "contribution", "type"} <= set(row) for row in tree_rows):
+        errors.append("Weekly attribution metric tree is incomplete.")
+    else:
+        checks["weekly_period_and_tree_completeness"] = True
+
+    dimension = payload.get("dimension_analysis", {})
+    drilldown = payload.get("drilldown", {})
+    task = payload.get("task", {})
+    dimension_rows = dimension.get("rows", [])
+    if not dimension.get("dimension") or not dimension_rows or not drilldown.get("label"):
+        errors.append("Weekly attribution dimension analysis or drilldown is incomplete.")
+    elif not all(task.get(key) for key in ("owner_role", "deadline", "issue", "action", "focus_dimension")):
+        errors.append("Weekly attribution task is incomplete.")
+    elif any(not str(record.get("user_id", "")).startswith("DEMO-") for record in drilldown.get("records", [])):
+        errors.append("Weekly attribution drilldown contains a non-demo user identifier.")
+    else:
+        checks["weekly_dimension_drilldown_and_task_completeness"] = True
+
+    effect = payload.get("strategy_effect", {})
+    if not effect.get("note") or not effect.get("pre_period") or not effect.get("post_period") or not effect.get("target_metrics"):
+        errors.append("Weekly attribution strategy-effect payload is incomplete.")
+    else:
+        checks["weekly_strategy_effect_completeness"] = True
+
+    weekly_text = json.dumps(payload, ensure_ascii=False)
+    if any(re.search(pattern, weekly_text, flags=re.IGNORECASE) for pattern in FORBIDDEN_PATTERNS):
+        errors.append("Forbidden production-like marker found in weekly attribution payload.")
+    else:
+        checks["weekly_public_marker_scan"] = True
+    return checks
 
 
 def main() -> None:
@@ -109,6 +173,8 @@ def main() -> None:
         if re.search(pattern, payload, flags=re.IGNORECASE):
             errors.append(f"Forbidden production-like marker found: {pattern}")
 
+    weekly_checks = validate_weekly_attribution(errors)
+
     report = {
         "status": "passed" if not errors else "failed",
         "record_count": len(records),
@@ -122,6 +188,7 @@ def main() -> None:
             "content_asset_completeness": not any("Content asset" in error for error in errors),
             "synthetic_data_markers": not any("Non-synthetic" in error for error in errors),
             "production_marker_scan": not any("Forbidden" in error for error in errors),
+            **weekly_checks,
         },
         "errors": errors,
     }
