@@ -7,7 +7,6 @@
   const count = (value) => value == null ? "—" : number.format(value);
   const percent = (value) => value == null ? "—" : `${(value * 100).toFixed(1)}%`;
   const signedCount = (value) => value == null ? "—" : `${value >= 0 ? "+" : ""}${number.format(value)}`;
-  const signedPp = (value) => value == null ? "—" : `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)} pp`;
   const formatValue = (value, type) => type === "rate" ? percent(value) : count(value);
   const dateRange = ({ start, end }) => `${start} 至 ${end}`;
 
@@ -38,7 +37,7 @@
   function renderDrilldown(drilldown) {
     const records = drilldown.records || [];
     $("weeklyDrillTitle").textContent = drilldown.label || "明细下钻";
-    $("weeklyDrillNote").textContent = `展示 ${records.length} 条满足规则的合成记录，可直接作为跟进清单。`;
+    $("weeklyDrillNote").textContent = `展示 ${records.length} 条满足规则的合成记录，供业务复核，不自动生成任务。`;
     $("weeklyDrillRows").innerHTML = records.map((record) => `
       <tr>
         <td>${escapeHtml(record.user_id)}</td>
@@ -53,32 +52,21 @@
       </tr>`).join("") || '<tr><td colspan="9" class="empty">当前周没有满足下钻规则的记录</td></tr>';
   }
 
-  function renderStrategy(effect) {
-    const before = effect.before || {};
-    const after = effect.after || {};
-    $("weeklyStrategyPeriod").textContent = `前组 ${effect.pre_period?.join(" 至 ") || "—"}；后组 ${effect.post_period?.join(" 至 ") || "—"}。`;
-    $("weeklyStrategyOpen").textContent = `${percent(before.d3_open_rate)} → ${percent(after.d3_open_rate)}（${signedPp(effect.d3_open_rate_delta)}）`;
-    $("weeklyStrategyDeal").textContent = `${percent(before.mature_deal_rate)} → ${percent(after.mature_deal_rate)}（${signedPp(effect.mature_deal_rate_delta)}）`;
-    $("weeklyStrategyNote").textContent = `${effect.note || ""} 前后创建销售机会分别为 ${count(before.created)} 和 ${count(after.created)} 条。`;
-  }
-
   function render(payload) {
-    const { metadata, week_comparison: weeks, anomaly, tree, dimension_analysis: dimension, drilldown, task, strategy_effect: effect } = payload;
+    const { metadata, week_comparison: weeks, anomaly, tree, dimension_analysis: dimension, drilldown, verification } = payload;
     const driver = anomaly.primary_driver || {};
     const topDimension = (dimension.rows || [])[0] || {};
-    const currentWeek = weeks.current;
-    const previousWeek = weeks.previous;
+    const records = drilldown.records || [];
     const movement = `${anomaly.label} ${count(anomaly.previous_value)} → ${count(anomaly.current_value)} 条（${signedCount(anomaly.delta)} 条）`;
     const driverText = `${driver.label || "核心因子"} ${formatValue(driver.previous, driver.type)} → ${formatValue(driver.current, driver.type)}，估算影响 ${signedCount(driver.contribution)} 条`;
     const dimensionText = `${dimension.dimension_label || "维度"}：${topDimension.value || "—"}`;
 
-    $("weeklyDataNote").textContent = `比较口径：本周 ${dateRange(currentWeek)}，前一完整周 ${dateRange(previousWeek)}。${metadata.note || ""}`;
+    $("weeklyDataNote").textContent = `比较口径：本周 ${dateRange(weeks.current)}，前一完整周 ${dateRange(weeks.previous)}。${metadata.note || ""}`;
     $("weeklyDiscover").textContent = `${movement}，作为本周优先诊断对象。`;
-    $("weeklyLocate").textContent = `${driver.label || "核心因子"}是最大驱动；优先落到${dimensionText}。`;
-    $("weeklyAssign").textContent = `${task.owner_role || "—"}在 ${task.deadline || "—"} 前处理 ${task.affected_records ?? 0} 条待跟进记录。`;
-    $("weeklyPlan").textContent = `围绕“${task.issue || "—"}”制定门店承接与分单时效优化动作。`;
-    $("weeklyExecute").textContent = `按任务清单追踪处理进度，并持续监控创开率及创建→开启时长。`;
-    $("weeklyEvaluate").textContent = `使用前后同期用户组回看 3 日创开率和 30 日内锁单率。`;
+    $("weeklyDecompose").textContent = `按“${tree.formula || "—"}”拆解，${driver.label || "核心因子"}贡献最大。`;
+    $("weeklyLocate").textContent = `${dimensionText}的估算影响最大，优先复核其分母和环节时效。`;
+    $("weeklyDrill").textContent = `${records.length} 条记录满足下钻规则，可回看具体状态与创建→开启时长。`;
+    $("weeklyConfirm").textContent = "当前结果是待验证假设；需结合业务记录确认后，才讨论责任归属或策略。";
 
     $("weeklyMetric").textContent = `${count(anomaly.current_value)} 条`;
     $("weeklyMetricNote").textContent = `${anomaly.label}：前一周 ${count(anomaly.previous_value)} 条，变化 ${signedCount(anomaly.delta)} 条。`;
@@ -86,20 +74,19 @@
     $("weeklyDriverNote").textContent = driverText;
     $("weeklyDimension").textContent = topDimension.value || "—";
     $("weeklyDimensionNote").textContent = `${dimension.dimension_label || "维度"}层级的最大估算影响：${signedCount(topDimension.estimated_factor_impact)} 条。`;
-    $("weeklyAffected").textContent = `${task.affected_records ?? 0} 条`;
-    $("weeklyAffectedNote").textContent = `符合“${drilldown.label || "明细下钻"}”规则的合成记录。`;
+    $("weeklyAffected").textContent = `${records.length} 条`;
+    $("weeklyAffectedNote").textContent = `满足“${drilldown.label || "明细下钻"}”规则的待核验合成记录。`;
     $("weeklyFormula").textContent = tree.formula || "—";
 
-    $("weeklyTaskStatus").textContent = task.status || "—";
-    $("weeklyTaskOwner").textContent = task.owner_role || "—";
-    $("weeklyTaskFocus").textContent = `${task.focus_dimension?.type || "—"}：${task.focus_dimension?.value || "—"}`;
-    $("weeklyTaskDeadline").textContent = task.deadline || "—";
-    $("weeklyTaskAction").textContent = task.action || "—";
+    $("weeklyVerificationTitle").textContent = verification.title || "待业务确认";
+    $("weeklyVerificationFocus").textContent = `${verification.focus_dimension?.type || "—"}：${verification.focus_dimension?.value || "—"}`;
+    $("weeklyVerificationQuestion").textContent = verification.question || "—";
+    $("weeklyVerificationEvidence").textContent = verification.evidence || "—";
+    $("weeklyVerificationNote").textContent = verification.note || "—";
 
     renderTree(tree.rows || []);
     renderDimension(dimension);
     renderDrilldown(drilldown);
-    renderStrategy(effect);
   }
 
   fetch("./data/demo/weekly_attribution_result.json")

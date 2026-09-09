@@ -14,8 +14,7 @@
     "weekly_payload_exists": true,
     "weekly_payload_is_synthetic": true,
     "weekly_period_and_tree_completeness": true,
-    "weekly_dimension_drilldown_and_task_completeness": true,
-    "weekly_strategy_effect_completeness": true,
+    "weekly_dimension_drilldown_and_verification_completeness": true,
     "weekly_public_marker_scan": true
   },
   "errors": []

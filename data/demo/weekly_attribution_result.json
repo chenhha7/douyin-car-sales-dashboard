@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "title": "周度经营归因与策略闭环（完全合成数据）",
+    "title": "周度经营异常归因（完全合成数据）",
     "is_synthetic": true,
-    "generated_at": "2026-09-09T19:15:52",
-    "rules_version": "1.0",
-    "note": "仅展示归因流程、计算结构与交互形式，不代表真实业务诊断、任务或策略效果。"
+    "generated_at": "2026-09-09T19:28:52",
+    "rules_version": "1.1",
+    "note": "仅展示归因流程、计算结构与交互形式，不代表真实业务诊断或确定根因。"
   },
   "week_comparison": {
     "current": {
@@ -817,47 +817,15 @@
       }
     ]
   },
-  "task": {
-    "task_id": "DEMO-TASK-2026-W36-001",
-    "status": "建议下发",
-    "owner_role": "区域运营负责人 / 门店负责人",
-    "deadline": "2026-09-08",
-    "issue": "创建销售机会后未及时开启",
-    "action": "核查待开启销售机会明细、门店分单时效与承接SOP执行情况",
+  "verification": {
+    "title": "待业务确认",
+    "question": "该门店的待开启销售机会，是否集中在分单、首次联系或商机开启录入环节？",
+    "note": "归因结果只用于锁定优先核验范围；在业务核验前，不自动下发任务，也不直接推导运营策略。",
     "focus_dimension": {
       "type": "门店",
       "value": "演示门店 B1-2"
     },
-    "affected_records": 4
-  },
-  "strategy_effect": {
-    "strategy_id": "STR-DEMO-SOP-001",
-    "strategy_name": "门店承接SOP标准化（合成演示）",
-    "start_date": "2026-07-14",
-    "pre_period": [
-      "2026-06-16",
-      "2026-07-13"
-    ],
-    "post_period": [
-      "2026-07-14",
-      "2026-08-10"
-    ],
-    "target_metrics": [
-      "3日创开率",
-      "30日内锁单率"
-    ],
-    "note": "仅用于公开Demo展示策略复盘结构，不代表真实业务上线时间、试点范围或效果。",
-    "before": {
-      "created": 135,
-      "d3_open_rate": 0.4666666666666667,
-      "mature_deal_rate": 0.06666666666666667
-    },
-    "after": {
-      "created": 129,
-      "d3_open_rate": 0.5271317829457365,
-      "mature_deal_rate": 0.09302325581395349
-    },
-    "d3_open_rate_delta": 0.06046511627906981,
-    "mature_deal_rate_delta": 0.02635658914728682
+    "affected_records": 4,
+    "evidence": "创开率是本周开启销售机会数变动的最大贡献因子；门店层级中演示门店 B1-2的估算影响最大。"
   }
 }

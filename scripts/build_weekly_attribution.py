@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a weekly attribution, drilldown and action-closure payload from synthetic journeys."""
+"""Build a weekly attribution, dimension drilldown and verification payload from synthetic journeys."""
 
 from __future__ import annotations
 
@@ -168,35 +168,6 @@ def opening_drilldown(records: list[dict], field: str, value: str, sla_hours: in
     return sorted(result, key=lambda item: item["create_to_open_hours"] or 10**9, reverse=True)[:20]
 
 
-def strategy_effect(records: list[dict], config: dict) -> dict:
-    strategy = config["strategy_registry"][0]
-    pre_start, pre_end = (parse_date(value) for value in strategy["pre_period"])
-    post_start, post_end = (parse_date(value) for value in strategy["post_period"])
-
-    def cohort_metrics(scope: list[dict]) -> dict:
-        created = [record for record in scope if record.get("has_opportunity")]
-        d3_opened = [
-            record for record in created
-            if record.get("create_to_open_hours") is not None and record["create_to_open_hours"] <= 72
-        ]
-        mature_created = [record for record in created if record.get("is_mature_opportunity")]
-        mature_deals = [record for record in mature_created if record.get("has_deal")]
-        return {
-            "created": len(created),
-            "d3_open_rate": rate(len(d3_opened), len(created)),
-            "mature_deal_rate": rate(len(mature_deals), len(mature_created)),
-        }
-
-    before, after = cohort_metrics(records_in_period(records, pre_start, pre_end)), cohort_metrics(records_in_period(records, post_start, post_end))
-    return {
-        **strategy,
-        "before": before,
-        "after": after,
-        "d3_open_rate_delta": None if before["d3_open_rate"] is None or after["d3_open_rate"] is None else after["d3_open_rate"] - before["d3_open_rate"],
-        "mature_deal_rate_delta": None if before["mature_deal_rate"] is None or after["mature_deal_rate"] is None else after["mature_deal_rate"] - before["mature_deal_rate"],
-    }
-
-
 def main() -> None:
     records = json.loads(DETAIL_FILE.read_text(encoding="utf-8"))
     config = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
@@ -230,26 +201,22 @@ def main() -> None:
     dimension_rows = weekly_dimension_impact(current, previous, primary_dimension, primary_driver["key"])
     top_dimension = dimension_rows[0] if dimension_rows else None
     drilldown = opening_drilldown(current, primary_dimension, top_dimension["value"], config["comparison"]["sla_create_to_open_hours"]) if top_dimension else []
-    playbook = config["action_playbook"][tree["playbook"]]
+    verification_guidance = config["verification_guidance"][tree["verification_rule"]]
     target_delta = current_metrics["opened"] - previous_metrics["opened"]
     severity = "high" if primary_driver["key"] == "open_rate" and (current_metrics["open_rate"] or 0) < (previous_metrics["open_rate"] or 0) else "medium"
-    task = {
-        "task_id": f"DEMO-TASK-{current_start.strftime('%G-W%V')}-001",
-        "status": "建议下发",
-        "owner_role": playbook["owner_role"],
-        "deadline": (current_end + timedelta(days=playbook["deadline_days"])).isoformat(),
-        "issue": playbook["issue"],
-        "action": playbook["action"],
+    verification = {
+        **verification_guidance,
         "focus_dimension": {"type": dimension_label(primary_dimension), "value": top_dimension["value"] if top_dimension else "—"},
         "affected_records": len(drilldown),
+        "evidence": f"{primary_driver['label']}是本周{tree['label']}变动的最大贡献因子；{dimension_label(primary_dimension)}层级中{top_dimension['value'] if top_dimension else '—'}的估算影响最大。",
     }
     payload = {
         "metadata": {
-            "title": "周度经营归因与策略闭环（完全合成数据）",
+            "title": "周度经营异常归因（完全合成数据）",
             "is_synthetic": True,
             "generated_at": datetime.now().isoformat(timespec="seconds"),
             "rules_version": config["version"],
-            "note": "仅展示归因流程、计算结构与交互形式，不代表真实业务诊断、任务或策略效果。",
+            "note": "仅展示归因流程、计算结构与交互形式，不代表真实业务诊断或确定根因。",
         },
         "week_comparison": {
             "current": {"start": current_start.isoformat(), "end": current_end.isoformat(), "record_count": len(current)},
@@ -277,8 +244,7 @@ def main() -> None:
             "label": "已创建未开启或创建→开启超SLA的销售机会",
             "records": drilldown,
         },
-        "task": task,
-        "strategy_effect": strategy_effect(records, config),
+        "verification": verification,
     }
     OUTPUT_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote weekly attribution payload: {OUTPUT_FILE.relative_to(ROOT)}")

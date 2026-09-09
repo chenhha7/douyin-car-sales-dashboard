@@ -37,8 +37,7 @@ def validate_weekly_attribution(errors: list[str]) -> dict[str, bool]:
         "weekly_payload_exists": False,
         "weekly_payload_is_synthetic": False,
         "weekly_period_and_tree_completeness": False,
-        "weekly_dimension_drilldown_and_task_completeness": False,
-        "weekly_strategy_effect_completeness": False,
+        "weekly_dimension_drilldown_and_verification_completeness": False,
         "weekly_public_marker_scan": False,
     }
     if not WEEKLY_FILE.exists():
@@ -70,22 +69,16 @@ def validate_weekly_attribution(errors: list[str]) -> dict[str, bool]:
 
     dimension = payload.get("dimension_analysis", {})
     drilldown = payload.get("drilldown", {})
-    task = payload.get("task", {})
+    verification = payload.get("verification", {})
     dimension_rows = dimension.get("rows", [])
     if not dimension.get("dimension") or not dimension_rows or not drilldown.get("label"):
         errors.append("Weekly attribution dimension analysis or drilldown is incomplete.")
-    elif not all(task.get(key) for key in ("owner_role", "deadline", "issue", "action", "focus_dimension")):
-        errors.append("Weekly attribution task is incomplete.")
+    elif not all(verification.get(key) for key in ("title", "question", "note", "focus_dimension", "evidence")):
+        errors.append("Weekly attribution verification guidance is incomplete.")
     elif any(not str(record.get("user_id", "")).startswith("DEMO-") for record in drilldown.get("records", [])):
         errors.append("Weekly attribution drilldown contains a non-demo user identifier.")
     else:
-        checks["weekly_dimension_drilldown_and_task_completeness"] = True
-
-    effect = payload.get("strategy_effect", {})
-    if not effect.get("note") or not effect.get("pre_period") or not effect.get("post_period") or not effect.get("target_metrics"):
-        errors.append("Weekly attribution strategy-effect payload is incomplete.")
-    else:
-        checks["weekly_strategy_effect_completeness"] = True
+        checks["weekly_dimension_drilldown_and_verification_completeness"] = True
 
     weekly_text = json.dumps(payload, ensure_ascii=False)
     if any(re.search(pattern, weekly_text, flags=re.IGNORECASE) for pattern in FORBIDDEN_PATTERNS):
