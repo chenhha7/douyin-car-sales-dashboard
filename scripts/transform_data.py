@@ -162,7 +162,7 @@ def main() -> None:
     ]
     summary = {
         "metadata": {
-            "title": "抖音本地生活卖车三页经营看板（完全合成数据）",
+            "title": "抖音本地生活卖车经营与渠道价值看板（完全合成数据）",
             "is_synthetic": True,
             "record_count": len(detail),
             "mature_window_days": MATURE_WINDOW_DAYS,

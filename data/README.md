@@ -30,6 +30,7 @@
 | `raw_funnel_records.json` | 合成的原始用户触达、订单、线索、商机、门店承接、到店 / 试驾、锁单与退款事件。 |
 | `attribution_detail.json` | 看板使用的用户级明细，补充当前阶段、各环节耗时、成熟商机标记和渠道价值标签。 |
 | `attribution_summary.json` | 全局、日度和多维聚合统计，可用于离线检查或扩展其他前端页面。 |
+| `weekly_attribution_result.json` | 周度归因 Skill 的完全合成示例输出，用于离线定位 KPI 波动，不在公开看板页面展示。 |
 | `data_quality_report.json` | 运行质量与公开发布边界检查后的结果。 |
 
 ## 生成与校验

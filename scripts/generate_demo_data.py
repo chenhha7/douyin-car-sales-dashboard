@@ -51,6 +51,11 @@ SERVICE_PROVIDERS = [
     {"name": "服务商 B", "weight": 0.35, "open_adjustment": -0.04, "deal_adjustment": -0.01},
     {"name": "服务商 C", "weight": 0.26, "open_adjustment": 0.00, "deal_adjustment": -0.02},
 ]
+PROVIDER_LIVE_ROOMS = {
+    "服务商 A": "直播间 A",
+    "服务商 B": "直播间 B",
+    "服务商 C": "直播间 C",
+}
 PROVIDER_ASSETS = {
     "服务商 A": ["直播间 A-午场", "直播间 A-晚场"],
     "服务商 B": ["直播间 B-午场", "直播间 B-晚场"],
@@ -203,8 +208,8 @@ def generate_records(sample_size: int = 1200) -> list[dict]:
             order_status = "已核销"
 
         action_type = "团购券购买 + 留资" if has_order and has_lead else "团购券购买" if has_order else "留资"
-        room = rng.choice(PROVIDER_ASSETS[provider["name"]]) if source["name"] == "直播间" else None
-        content_asset = room if room else f"{provider['name']} · 私信内容"
+        content_asset = rng.choice(PROVIDER_ASSETS[provider["name"]]) if source["name"] == "直播间" else f"{provider['name']} · 私信内容"
+        room = PROVIDER_LIVE_ROOMS[provider["name"]] if source["name"] == "直播间" else None
 
         records.append({
             "user_id": f"DEMO-U{index:05d}",
