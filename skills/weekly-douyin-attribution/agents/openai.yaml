@@ -1,0 +1,4 @@
+interface:
+  display_name: "抖音卖车周度归因"
+  short_description: "按周完成指标拆解、多维定位、明细下钻、任务生成与策略效果复盘"
+  default_prompt: "请使用 $weekly-douyin-attribution 对最近两个完整自然周执行抖音卖车经营归因，输出看板 JSON、周报和待确认任务草稿。"
